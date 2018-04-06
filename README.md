@@ -1,3 +1,5 @@
+[![BCH compliance](https://bettercodehub.com/edge/badge/LTO-BlockChaingers/frontend?branch=master)](https://bettercodehub.com/)
+
 # Hackathon
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
