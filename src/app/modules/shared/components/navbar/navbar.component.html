@@ -1,0 +1,11 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <mat-toolbar-row>
+    <a class="brand" routerLink="/">
+      <ng-content select="[navbarTitle]"></ng-content>
+    </a>
+    <span class="flex"></span>
+    <!-- <button mat-raised-button color="primary" (click)="logout()" *ngIf="auth.authenticated$ | async">
+      Logout
+    </button> -->
+  </mat-toolbar-row>
+</mat-toolbar>
