@@ -22,7 +22,47 @@
           }
         },
         "form": {
-          "<ref>": "definitions.request_form"
+          "title": "Quotation request form",
+          "definition": [
+            {
+              "fields": [
+                {
+                  "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
+                  "label": "Supplier",
+                  "name": "supplier",
+                  "url": "https://jsonplaceholder.typicode.com/users",
+                  "optionText": "name",
+                  "optionValue": "{ name, email, phone }",
+                  "required": true
+                },
+                {
+                  "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#textarea",
+                  "label": "Description",
+                  "name": "description",
+                  "helptip": "Which service would you like a quotation for?"
+                },
+                {
+                  "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
+                  "label": "Urgency",
+                  "name": "urgency",
+                  "options": [
+                    {
+                      "value": "normal",
+                      "label": "Normal"
+                    },
+                    {
+                      "value": "high",
+                      "label": "High"
+                    },
+                    {
+                      "value": "critical",
+                      "label": "Critical"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
       "invite_supplier": {

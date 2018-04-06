@@ -27,10 +27,7 @@ export class CreateComponent implements OnInit {
     const state = scenario.states[':initial'];
     const initialAction = scenario.actions[state.actions[0]];
     if (initialAction['form']) {
-      const formPath = initialAction['form']['<ref>'];
-      const formName = formPath.split('.').pop() as string;
-      const formDefiniton = this.selectedScenario.definitions[formName];
-      this.formMetadata = new FormMetadata(formDefiniton);
+      this.formMetadata = new FormMetadata(initialAction['form']);
     }
   }
 
