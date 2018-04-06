@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "verification-app": "ng serve --app=0",
-    "livecontracts-app": "ng serve --app=1 --port=4300"
+    "livecontracts-app": "ng serve --app=1 --port=4300",
+    "playground": "angular-playground"
   },
   "private": true,
   "dependencies": {
@@ -39,6 +40,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "@types/uuid": "^3.4.3",
+    "angular-playground": "^4.0.0",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
