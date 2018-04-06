@@ -8,5 +8,6 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(LivecontractsModule)
+platformBrowserDynamic()
+  .bootstrapModule(LivecontractsModule)
   .catch(err => console.log(err));

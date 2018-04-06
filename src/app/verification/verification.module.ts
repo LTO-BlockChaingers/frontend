@@ -6,12 +6,8 @@ import { WavesModule } from '@modules/waves';
 import { VerificationComponent } from './verification.component';
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    CommonModule,
-    WavesModule.forRoot()
-  ],
+  imports: [BrowserModule, CommonModule, WavesModule.forRoot()],
   declarations: [VerificationComponent],
   bootstrap: [VerificationComponent]
 })
-export class VerificationModule { }
+export class VerificationModule {}

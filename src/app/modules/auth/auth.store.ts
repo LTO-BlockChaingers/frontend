@@ -36,7 +36,7 @@ export class AuthStore {
     return Object.keys(this._getUsers());
   }
 
-  private _getUsers(): {[email: string]: User} {
+  private _getUsers(): { [email: string]: User } {
     const usersJSONString = localStorage.getItem(this._LOCALSTORAGE_KEY) || '{}';
     return JSON.parse(usersJSONString);
   }

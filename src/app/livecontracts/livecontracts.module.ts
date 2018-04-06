@@ -6,12 +6,8 @@ import { WavesModule } from '@modules/waves';
 import { LivecontractsComponent } from './livecontracts.component';
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    CommonModule,
-    WavesModule.forRoot()
-  ],
+  imports: [BrowserModule, CommonModule, WavesModule.forRoot()],
   declarations: [LivecontractsComponent],
   bootstrap: [LivecontractsComponent]
 })
-export class LivecontractsModule { }
+export class LivecontractsModule {}
