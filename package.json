@@ -9,8 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "mvp1": "ng serve --app=0",
-    "mvp2": "ng serve --app=1 --port=4300"
+    "verification-app": "ng serve --app=0",
+    "livecontracts-app": "ng serve --app=1 --port=4300"
   },
   "private": true,
   "dependencies": {
