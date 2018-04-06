@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { WavesModule } from '@modules/waves';
 import { ProcessesModule } from '@modules/processes';
-import { NavbarModule } from '@modules/shared/components';
+import { NavbarModule } from '@shared/components';
 import { AuthModule } from '@modules/auth';
 import { BlockchainModule } from '@modules/blockchain';
 

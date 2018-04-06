@@ -3,8 +3,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WavesModule } from '@modules/waves';
-import { NavbarModule } from '@modules/shared/components';
+import { NavbarModule } from '@shared/components';
 import { VerificationRoutingModule } from './verification-routing.module';
+import { AuthModule } from '@modules/auth';
 
 import { VerificationComponent } from './verification.component';
 
@@ -15,6 +16,7 @@ import { VerificationComponent } from './verification.component';
     NavbarModule,
     CommonModule,
     WavesModule.forRoot(),
+    AuthModule.forRoot(),
     VerificationRoutingModule
   ],
   declarations: [VerificationComponent],
