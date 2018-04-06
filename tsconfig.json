@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "baseUrl": "src",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -16,7 +16,8 @@
       "@app/*": ["app/*"],
       "@modules/*": ["app/modules/*"],
       "@models/*": ["app/models/*"],
-      "@utils/*": ["app/utils/*"]
+      "@utils/*": ["app/utils/*"],
+      "@shared/*": ["app/shared/*"]
     }
   }
 }
