@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
+import * as Waves from './waves-api'
 
 @Injectable()
 export class WavesService {
-  constructor() {}
+  constructor() { }
+  //sets data to account, 
+  setData(seed: string, key: string, value: boolean | number | string): Promise<string> {
+    return Waves.setData(seed, key, value)
+  }
+  getData(seed: string, key?: string): Promise<Waves.IDataEntry[]> {
+    return Waves.getData(seed, key)
+  }
 }
