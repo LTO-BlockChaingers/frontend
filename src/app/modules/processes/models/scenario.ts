@@ -14,7 +14,7 @@ export interface ScenarioSchema {
   assets: {
     [asset: string]: any;
   };
-  definitios: {
+  definitions: {
     [definition: string]: any;
   };
   info: any;

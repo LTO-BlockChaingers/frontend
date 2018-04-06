@@ -1,0 +1,54 @@
+<form novalidate [formGroup]="form">
+  <ng-container *ngFor="let step of metadata.definitions; index as i">
+    <!-- check step conditions -->
+    <lt-form-step *ngIf="getCondition$(step.conditions) | async" [name]="step.group | groupName:i" [form]="form" #group="ltFormStep">
+      <h3>{{step.label}}</h3>
+      <ng-container *ngFor="let field of step.fields">
+        <!-- Check field condition -->
+        <ng-container *ngIf="getCondition$(field.conditions, step.group) | async">
+          <ng-container *ngTemplateOutlet="getTemplate(field); context: { definition: field, formGroup: group.control, step: step, value: valueFor(step.group, field.name), formData$: formData$}"></ng-container>
+        </ng-container>
+      </ng-container>
+    </lt-form-step>
+  </ng-container>
+</form>
+
+<ng-template #templateNotFoundTpl let-definition="definition">
+  <p>Template for "{{definition.type}}" not found</p>
+</ng-template>
+
+<ng-template #txtTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-text-input [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-text-input>
+</ng-template>
+
+<ng-template #selectTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-select [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-select>
+</ng-template>
+
+<ng-template #amountTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-amount [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-amount>
+</ng-template>
+
+<ng-template #moneyTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-money [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-money>
+</ng-template>
+
+<ng-template #dateTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-date-picker [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-date-picker>
+</ng-template>
+
+<ng-template #textareaTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-textarea [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-textarea>
+</ng-template>
+
+<ng-template #checkboxTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-checkbox [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-checkbox>
+</ng-template>
+
+<ng-template #groupTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-group [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-group>
+</ng-template>
+
+<ng-template #expressionTpl let-definition="definition" let-formGroup="formGroup" let-step="step" let-value="value" let-formData$="formData$">
+  <lt-expression [name]="definition.name | fieldName" [definition]="definition" [formGroup]="formGroup" [formValue]="formData$ | async"></lt-expression>
+</ng-template>
