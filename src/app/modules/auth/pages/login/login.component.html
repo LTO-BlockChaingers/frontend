@@ -1,0 +1,25 @@
+<form novalidate #form="ngForm">
+  <mat-card>
+    <mat-card-title>Login</mat-card-title>
+    <mat-card-content>
+      <ng-container *ngIf="emails.length; else noEmailsTpl">
+        <mat-form-field>
+          <mat-select placeholder="Email" matInput required ngModel name="email">
+            <mat-option [value]="email" *ngFor="let email of emails">{{email}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" required ngModel name="password">
+        </mat-form-field>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="accent" [disabled]="form.invalid" (click)="login(form.value)" *ngIf="emails.length">Login</button>
+      <a mat-button routerLink="../register">Register</a>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+<ng-template #noEmailsTpl>
+  No accounts
+</ng-template>
