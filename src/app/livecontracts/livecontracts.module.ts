@@ -7,6 +7,7 @@ import { WavesModule } from '@modules/waves';
 import { ProcessesModule } from '@modules/processes';
 import { NavbarModule } from '@modules/shared/components';
 import { AuthModule } from '@modules/auth';
+import { BlockchainModule } from '@modules/blockchain';
 
 import { LivecontractsRoutingModule } from './livecontracts-routing.module';
 
@@ -22,6 +23,7 @@ import { LivecontractsComponent } from './livecontracts.component';
     AuthModule.forRoot(),
     WavesModule.forRoot(),
     ProcessesModule.forRoot(),
+    BlockchainModule.forRoot(),
     LivecontractsRoutingModule
   ],
   declarations: [LivecontractsComponent],

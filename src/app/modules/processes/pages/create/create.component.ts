@@ -6,7 +6,7 @@ import { publishReplay, refCount, take } from 'rxjs/operators';
 import { FormMetadata } from '@app/models/forms';
 import { v4 as uuid } from 'uuid';
 import { AuthStore } from '@modules/auth';
-import { Identity, EventChain, Response } from '@modules/blockchain';
+import { Identity, EventChain, Response, BlockchainRepository } from '@modules/blockchain';
 
 @Component({
   selector: 'app-create',
@@ -19,7 +19,11 @@ export class CreateComponent implements OnInit {
   formMetadata: any; // Form metadata
   responseData: any = {};
 
-  constructor(private scenariosRepo: ScenariosRepository, private auth: AuthStore) {
+  constructor(
+    private scenariosRepo: ScenariosRepository,
+    private auth: AuthStore,
+    private blockchainRepo: BlockchainRepository
+  ) {
     this.scenarios$ = scenariosRepo.list().pipe(publishReplay(1), refCount());
   }
 
@@ -87,7 +91,7 @@ export class CreateComponent implements OnInit {
 
     // After creation we have to save this chain locally
     // this.dataService.saveChain(chain);
-    console.log('SAVE CHAIN');
+    this.blockchainRepo.post(chain);
 
     return chain;
   }
