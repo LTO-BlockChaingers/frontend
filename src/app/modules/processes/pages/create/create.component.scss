@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  padding: 24px;
+  background: white;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+.step-buttons {
+  margin-bottom: -20px;
+  margin-top: 24px;
+}
+
+h4[mat-line] {
+  font-size: 18px;
+}
+p[mat-line] {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+mat-list-item {
+  cursor: pointer;
+  &:hover,
+  &.active {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.scenarios-container {
+  max-height: 400px;
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
