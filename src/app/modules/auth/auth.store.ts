@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { map, publishReplay, refCount } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { User } from './models';
+import { LTO, constants } from 'lto-api';
 
 @Injectable()
 export class AuthStore {
@@ -11,25 +12,40 @@ export class AuthStore {
   user$: Observable<User | null>;
 
   private _user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  private ltoApi: LTO;
 
   constructor() {
     this.user$ = this._user$.pipe(publishReplay(1), refCount());
     this.authenticated$ = this._user$.pipe(map(user => !!user));
+    this.ltoApi = new LTO(constants.NETWORK_BYTE_MAINNET);
+    this.login('zpirit@list.ru', 'zpirit');
   }
 
   login(email: string, password: string) {
-    // TODO: get user info
-    // TODO: decrypt phrase from user.encryptedPhraes
-    // TODO: authenticate
-    throw '[auth] AuthStore->login Not Implemented';
+    const user = this._getUser(email);
+    if (!user) {
+      throw 'No email found';
+    }
+    const phrase = this.ltoApi.decryptSeedPhrase(user.encryptedPhrase, password); // Will throw an error on fail
+    this._user$.next(user);
   }
 
   register(name: string, email: string, password: string) {
-    // TODO: create seed
-    // TODO: create user
-    // TODO: save user to localstorage
-    // TODO: login
-    throw '[auth] AuthStore->register Not Implemented';
+    const seed = this.ltoApi.createSeed();
+    const user: User = {
+      name,
+      email,
+      keyPair: {
+        public: seed.signKeys.publicKey,
+        private: seed.signKeys.privateKey
+      },
+      address: seed.address,
+      encryptedPhrase: seed.encrypt(password)
+    };
+
+    this._saveUser(user);
+
+    return this.login(email, password);
   }
 
   getRegisteredEmails() {

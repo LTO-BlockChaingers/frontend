@@ -1,3 +1,9 @@
+import { KeyPair } from './keypair';
+
 export interface User {
-  [key: string]: any;
+  name: string;
+  email: string;
+  address: string;
+  encryptedPhrase: string;
+  keyPair: KeyPair;
 }
