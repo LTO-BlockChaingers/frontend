@@ -15,7 +15,8 @@
     "paths": {
       "@app/*": ["app/*"],
       "@modules/*": ["app/modules/*"],
-      "@models/*": ["app/models/*"]
+      "@models/*": ["app/models/*"],
+      "@utils/*": ["app/utils/*"]
     }
   }
 }
