@@ -2,8 +2,12 @@ import { Actor, ActorSchema } from './actor';
 import { Receipt, ReceiptSchema } from './receipt';
 
 export interface ResponseSchema {
+  key: string;
   process: {
     id: string;
+    scenario: {
+      id: string;
+    }
   };
   action: {
     key: string;
@@ -26,8 +30,14 @@ export interface ResponseSchema {
  */
 export class Response implements ResponseSchema {
   readonly $schema = 'http://specs.livecontracts.io/draft-01/12-response/schema.json#';
+
+  key: string;
+
   process: {
     id: string;
+    scenario: {
+      id: string;
+    }
   };
 
   action: {
@@ -73,7 +83,7 @@ export class Response implements ResponseSchema {
    * Build model from backend response
    * @param data backend response
    */
-  static buildFromSchema(data: ResponseSchema) {}
+  static buildFromSchema(data: ResponseSchema) { }
 
   /**
    * When we build response in a runtime we have some fields which is not set
@@ -81,6 +91,7 @@ export class Response implements ResponseSchema {
    */
   static buildInRuntime(data: Pick<ResponseSchema, 'process' | 'action' | 'actor' | 'data'>) {
     return new Response({
+      key: data.key,
       process: data.process,
       action: data.action,
       actor: data.actor,
@@ -92,6 +103,7 @@ export class Response implements ResponseSchema {
   }
 
   constructor(data: ResponseSchema) {
+    this.key = data.key;
     this.action = data.action;
     this.actor = data.actor;
     this.display = data.display || 'always';
