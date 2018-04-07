@@ -1,28 +1,32 @@
-<h3>Create process</h3>
-<mat-vertical-stepper linear>
-  <mat-step label="Select template" [completed]="selectedScenario !== null">
-    <div class="scenarios-container">
-      <mat-list>
-        <mat-list-item *ngFor="let scenario of scenarios$ | async" (click)="activateScenario(scenario)" [ngClass]="{active: scenario === selectedScenario}">
-          <h4 mat-line>{{scenario.name}}</h4>
-          <p mat-line>{{scenario.description}}</p>
-        </mat-list-item>
-      </mat-list>
-    </div>
-    <div class="step-buttons">
-      <button mat-raised-button color="primary" matStepperNext [disabled]="!selectedScenario">Select</button>
-      <button mat-button color="primary">Cancel</button>
-    </div>
-  </mat-step>
-  <mat-step label="Fill initial values">
-    <div class="step-content">
-      <div class="first-action">
-        <lc-form *ngIf="formMetadata" [metadata]="formMetadata" (valueChange)="formChanges($event)" #form="lcForm"></lc-form>
+<div class="page-content">
+  <h3>Create process</h3>
+  <mat-vertical-stepper linear>
+    <mat-step label="Select template" [completed]="selectedScenario !== null">
+      <div class="scenarios-container">
+        <mat-list>
+          <mat-list-item *ngFor="let scenario of scenarios$ | async" (click)="activateScenario(scenario)" [ngClass]="{active: scenario === selectedScenario}">
+            <h4 mat-line>{{scenario.name}}</h4>
+            <p mat-line>{{scenario.description}}</p>
+          </mat-list-item>
+        </mat-list>
       </div>
-    </div>
-    <div class="step-buttons">
-      <button mat-raised-button color="primary" (click)="createProcess()">Create</button>
-    </div>
-  </mat-step>
-  <mat-step label="Set actors"></mat-step>
-</mat-vertical-stepper>
+      <div class="step-buttons">
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!selectedScenario">Select</button>
+        <button mat-button color="primary" (click)="cancel()">Cancel</button>
+      </div>
+    </mat-step>
+    <mat-step label="Fill initial values">
+      <div class="step-content">
+        <div class="first-action">
+          <lc-form *ngIf="formMetadata" [metadata]="formMetadata" (valueChange)="formChanges($event)" #form="lcForm"></lc-form>
+        </div>
+      </div>
+      <div class="step-buttons">
+        <button mat-raised-button color="primary" (click)="createProcess()">Create</button>
+      </div>
+    </mat-step>
+    <mat-step label="Check liability">
+      <app-liability-checker></app-liability-checker>
+    </mat-step>
+  </mat-vertical-stepper>
+</div>
