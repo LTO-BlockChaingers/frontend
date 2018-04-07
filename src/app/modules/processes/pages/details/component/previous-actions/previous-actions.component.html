@@ -1,13 +1,8 @@
-<mat-expansion-panel>
+<mat-expansion-panel *ngFor="let action of actions">
   <mat-expansion-panel-header>
-    <mat-panel-title>Previous events</mat-panel-title>
+    <mat-panel-title class="panel-title">{{actions.title}}</mat-panel-title>
   </mat-expansion-panel-header>
   <div>
-    <mat-list>
-      <mat-list-item *ngFor="let action of actions">
-        <h4 mat-line>{{action.title}}</h4>
-        <p mat-line>{{action.date | date}}</p>
-      </mat-list-item>
-    </mat-list>
+    {{action.actor}} - {{action.date | date}}
   </div>
 </mat-expansion-panel>
