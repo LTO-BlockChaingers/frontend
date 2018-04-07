@@ -1,34 +1,32 @@
 [
   {
-    "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5ee?v=799ZMMdm",
+    "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5eev=799ZMMdm",
     "name": "Sign an agreement",
     "description": "Sign an agreement with an authorized party",
     "actors": {
-      "client": {},
-      "supplier": {}
+      "client": {
+      },
+      "supplier": {
+      }
     },
     "actions": {
-      "select_agreement": {
-        "actor": "client",
-        "responses": {
-          "ok": {
-            "label": "selected",
-            "key": "ok",
-            "display": "always"
-          }
-        }
-      },
       "fill_in_form": {
         "actor": "client",
         "responses": {
           "ok": {
             "label": "fill in",
+            "title": "Provided information and verified identify of the supplier",
             "key": "ok",
             "display": "always",
             "update": {
               "select": "actors.supplier",
-              "patch": false,
-              "jmespath": "{id: id, name: name, email: email, signkeys: { user: publicKey }}}"
+              "data": {
+                "$schema": "http://specs.livecontracts.io/draft-01/10-document/schema.json#",
+                "id": { "<ref>": "response.data.id" },
+                "name": { "<ref>": "response.data.name" },
+                "email": { "<ref>": "response.data.email" },
+                "signkeys": { "user": { "<ref>": "response.data.encoding" } }
+              }
             }
           },
           "failed": {
@@ -72,19 +70,21 @@
     },
     "states": {
       ":initial": {
-        "title": "Select supplier",
+        "title": "Check supplier",
         "instructions": {
           "client": "Fill out this form to select a supplier.",
           "supplier": ""
         },
-        "actions": ["fill_in_form"],
+        "actions": [
+          "fill_in_form"
+        ],
         "default_action": "fill_in_form",
         "transitions": [
           {
             "action": "fill_in_form",
             "response": "ok",
             "condition": null,
-            "transition": "waiting_for_first_signer"
+            "transition": "invalid_supplier"
           },
           {
             "action": "fill_in_form",
@@ -100,7 +100,9 @@
           "client": "The chosen supplier doesn't have the authority to sign.",
           "supplier": "You do not have the authority to sign the document."
         },
-        "actions": ["end_process"],
+        "actions": [
+          "end_process"
+        ],
         "default_action": "end_process",
         "transitions": [
           {
@@ -114,7 +116,11 @@
       "waiting_for_first_signer": {
         "title": "Waiting for signers",
         "description": "Waiting on both parties to sign",
-        "actions": ["sign_document_client", "sign_document_supplier"],
+        "default_action": "sign_document_client",
+        "actions": [
+          "sign_document_client",
+          "sign_document_supplier"
+        ],
         "transitions": [
           {
             "action": "sign_document_client",
@@ -136,7 +142,9 @@
           "client": "Wait for the supplier to sign the document",
           "supplier": "Please sign the document to finish the process"
         },
-        "actions": ["sign_document_supplier"],
+        "actions": [
+          "sign_document_supplier"
+        ],
         "default_action": "sign_document_supplier",
         "transitions": [
           {
@@ -153,7 +161,9 @@
           "client": "Please sign the document to finish the process",
           "supplier": "Wait for the client to sign the document"
         },
-        "actions": ["sign_document_client"],
+        "actions": [
+          "sign_document_client"
+        ],
         "default_action": "sign_document_client",
         "transitions": [
           {
@@ -182,7 +192,11 @@
           },
           "urgency": {
             "type": "string",
-            "enum": ["normal", "high", "critical"]
+            "enum": [
+              "normal",
+              "high",
+              "critical"
+            ]
           }
         }
       },
@@ -270,8 +284,14 @@
     },
     "info": {},
     "permissions": {
-      "*": ["read"],
-      "admin": ["read", "write", "delete"]
+      "*": [
+        "read"
+      ],
+      "admin": [
+        "read",
+        "write",
+        "delete"
+      ]
     },
     "identity": {
       "id": "0c1d7eac-18ec-496a-8713-8e6e5f098686",

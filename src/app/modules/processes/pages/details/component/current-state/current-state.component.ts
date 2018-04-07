@@ -33,8 +33,14 @@ export class CurrentStateComponent implements OnInit {
 
   get defaultAction(): any {
     console.log('state', this.state);
-    console.log('scenario', this.scenarioId);
-    return this.state.default_action.actor.includes(this.actor) ? this.state.default_action : null;
+    console.log(typeof this.state.default_action.actor)
+    if (typeof this.state.default_action.actor instanceof String) {
+      return this.state.default_action.actor === this.actor ? this.state.default_action : null;
+    } else if (typeof this.state.default_action.actor instanceof Array) {
+      return this.state.default_action.actor.includes(this.actor) ? this.state.default_action : null;
+    }
+
+    return null;
   }
 
   get actions(): any[] {
