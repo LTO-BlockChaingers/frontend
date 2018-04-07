@@ -89,7 +89,7 @@ export class Response implements ResponseSchema {
    * When we build response in a runtime we have some fields which is not set
    * @param data initial data for response
    */
-  static buildInRuntime(data: Pick<ResponseSchema, 'process' | 'action' | 'actor' | 'data'>) {
+  static buildInRuntime(data: Pick<ResponseSchema, 'process' | 'action' | 'actor' | 'data' | 'key'>) {
     return new Response({
       key: data.key,
       process: data.process,
