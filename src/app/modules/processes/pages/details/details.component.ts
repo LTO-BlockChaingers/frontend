@@ -16,4 +16,8 @@ export class DetailsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  actionHandler(action: any) {
+    console.log(action);
+  }
 }

@@ -1,7 +1,7 @@
 <div class="tasks-container">
   <lc-previous-actions [actions]="process.previous"></lc-previous-actions>
   <div class="hint">Current</div>
-  <lc-current-state [state]="process.current" [actor]="actor"></lc-current-state>
+  <lc-current-state [state]="process.current" [actor]="actor" (acton)="actionHandler($event)"></lc-current-state>
   <div class="hint">Next</div>
   <lc-next-states [states]="process.next"></lc-next-states>
 </div>
