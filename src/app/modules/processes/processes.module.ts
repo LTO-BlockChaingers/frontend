@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ScenariosRepository } from './scenarios.repository';
 import { ProcessesRepository } from './processes.repository';
 import { MockScenarioRepository } from './mock-scenario.repository';
+import { MockProcessesRepository } from './mock-processes.repository';
 
 @NgModule({
   imports: [CommonModule],
@@ -14,7 +15,10 @@ export class ProcessesModule {
     return {
       ngModule: ProcessesModule,
       providers: [
-        ProcessesRepository,
+        {
+          provide: ProcessesRepository,
+          useClass: MockProcessesRepository
+        },
         {
           provide: ScenariosRepository,
           useClass: MockScenarioRepository

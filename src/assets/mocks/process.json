@@ -1,0 +1,188 @@
+[
+{
+  "id": "10969b30-9160-4c22-bd3b-32820c9e2fb7",
+  "name": "Sign an agreement",
+  "scenario": "fe659ffa-537d-461a-abd7-aa0f3643d5eev=799ZMMdm",
+  "actors": {
+    "client": {
+      "id": "e36912f1-8ab0-4ea4-b856-183c0484d408",
+      "signkeys": {
+        "system": "",
+        "user": "C9PErj9yUkTxyZcqjSnMxXM9ARqR7cXyKDAJyuxF3ejd"
+      },
+      "email": "developer@legalthings.net",
+      "node": "",
+      "encryptkey": "",
+      "schema": "http://specs.livecontracts.io/draft-01/02-identity/schema.json#"
+    },
+    "supplier": {}
+  },
+  "previous": [
+    {
+      "id": "lt:/processes/10969b30-9160-4c22-bd3b-32820c9e2fb7/actions/fill_in_form/responses/ok",
+      "key": "ok",
+      "display": "always",
+      "action": "fill_in_form",
+      "actor": "client",
+      "data": [],
+      "date": "2018-04-07T17:23:18+0000",
+      "label": "fill in"
+    }
+  ],
+  "current": {
+    "title": "Waiting for signers",
+    "description": "Waiting on both parties to sign",
+    "actions": [
+      "sign_document_client",
+      "sign_document_supplier"
+    ],
+    "transitions": [
+      {
+        "action": "sign_document_client",
+        "response": "ok",
+        "condition": null,
+        "transition": "waiting_for_supplier"
+      },
+      {
+        "action": "sign_document_supplier",
+        "response": "ok",
+        "condition": null,
+        "transition": "waiting_for_client"
+      }
+    ],
+    "key": "waiting_for_first_signer"
+  },
+  "nextCount": 1,
+  "data": {},
+  "assets": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "high",
+            "critical"
+          ]
+        }
+      }
+    },
+    "quotation": {
+      "$ref": "http://specs.livecontracts.io/draft-01/10-document/schema.json#"
+    }
+  },
+  "definitions": {
+    "request_form": {
+      "title": "Quotation request form",
+      "definition": [
+        {
+          "fields": [
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
+              "label": "Supplier",
+              "name": "supplier",
+              "url": "https://jsonplaceholder.typicode.com/users",
+              "optionText": "name",
+              "optionValue": "{ name, email, phone }",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#textarea",
+              "label": "Description",
+              "name": "description",
+              "helptip": "Which service would you like a quotation for?"
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
+              "label": "Urgency",
+              "name": "urgency",
+              "options": [
+                {
+                  "value": "normal",
+                  "label": "Normal"
+                },
+                {
+                  "value": "high",
+                  "label": "High"
+                },
+                {
+                  "value": "critical",
+                  "label": "Critical"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "client_form": {
+      "title": "Enter client information",
+      "definition": [
+        {
+          "fields": [
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+              "label": "Name",
+              "name": "name",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#email",
+              "label": "E-mail",
+              "name": "email",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+              "label": "Public Key Person",
+              "name": "public_key_person",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+              "label": "Public Key Company",
+              "name": "public_key_company",
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "info": {},
+  "response": [],
+  "creation": "2018-04-07T17:23:18+0000",
+  "next": [
+    {
+      "title": "Waiting for supplier",
+      "instructions": {
+        "client": "Wait for the supplier to sign the document",
+        "supplier": "Please sign the document to finish the process"
+      },
+      "actions": [
+        "sign_document_supplier"
+      ],
+      "default_action": "sign_document_supplier",
+      "transitions": [
+        {
+          "action": "sign_document_supplier",
+          "response": "ok",
+          "condition": null,
+          "transition": ":success"
+        }
+      ],
+      "key": "waiting_for_supplier"
+    },
+    {
+      "actions": [],
+      "transitions": [],
+      "key": ":success"
+    }
+  ],
+  "state": "running"
+}
+]
