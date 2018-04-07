@@ -1,273 +1,168 @@
 [
   {
     "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5ee?v=799ZMMdm",
-    "name": "Accept or reject a quotation",
-    "description": "Accept or reject a quotation",
+    "name": "Sign an agreement",
+    "description": "Sign an agreement with an authorized party",
     "actors": {
-      "supplier": {
-        "id": "0c1d7eac-18ec-496a-8713-8e6e5f098686"
-      },
-      "client": {
-        "id": "0c1d7eac-18ec-496a-8713-8e6e5f098686"
-      }
+      "client": {},
+      "supplier": {}
     },
     "actions": {
-      "request_quotation": {
+      "select_agreement": {
         "actor": "client",
         "responses": {
           "ok": {
+            "label": "selected",
+            "key": "ok",
+            "display": "always"
+          }
+        }
+      },
+      "fill_in_form": {
+        "actor": "client",
+        "responses": {
+          "ok": {
+            "label": "fill in",
             "key": "ok",
             "display": "always",
-            "transition": ":failed"
-          }
-        },
-        "form": {
-          "title": "Quotation request form",
-          "definition": [
-            {
-              "fields": [
-                {
-                  "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
-                  "label": "Supplier",
-                  "name": "supplier",
-                  "url": "https://jsonplaceholder.typicode.com/users",
-                  "optionText": "name",
-                  "optionValue": "{ name, email, phone }",
-                  "required": true
-                },
-                {
-                  "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#textarea",
-                  "label": "Description",
-                  "name": "description",
-                  "helptip": "Which service would you like a quotation for?"
-                },
-                {
-                  "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
-                  "label": "Urgency",
-                  "name": "urgency",
-                  "options": [
-                    {
-                      "value": "normal",
-                      "label": "Normal"
-                    },
-                    {
-                      "value": "high",
-                      "label": "High"
-                    },
-                    {
-                      "value": "critical",
-                      "label": "Critical"
-                    }
-                  ]
-                }
-              ]
+            "update": {
+              "select": "actors.supplier",
+              "patch": false,
+              "jmespath": "{id: id, name: name, email: email, signkeys: { user: publicKey }}}"
             }
-          ]
-        }
-      },
-      "invite_supplier": {
-        "actor": "client",
-        "responses": {
-          "ok": {
-            "key": "ok",
-            "display": "always",
-            "transition": ":failed"
-          }
-        }
-      },
-      "enter_client": {
-        "actor": "supplier",
-        "responses": {
-          "ok": {
-            "key": "ok",
-            "display": "always",
-            "transition": ":failed"
+          },
+          "failed": {
+            "key": "failed"
           }
         },
         "form": {
-          "<ref>": "definitions.request_form"
+          "<ref>": "definitions.client_form"
         }
       },
-      "invite_client": {
-        "actor": "supplier",
-        "responses": {
-          "ok": {
-            "key": "ok",
-            "display": "always",
-            "transition": ":failed"
-          }
-        }
-      },
-      "upload": {
-        "actor": "supplier",
-        "responses": {
-          "ok": {
-            "key": "ok",
-            "display": "always",
-            "transition": ":failed"
-          }
-        }
-      },
-      "review": {
+      "end_process": {
         "actor": "client",
         "responses": {
-          "accept": {
-            "key": "accept",
-            "display": "always",
-            "transition": ":failed"
-          },
-          "deny": {
-            "key": "deny",
-            "display": "always",
-            "transition": ":failed"
+          "ok": {
+            "label": "End process",
+            "key": "ok",
+            "display": "always"
           }
         }
       },
-      "cancel": {
-        "actor": [
-          "client",
-          "supplier"
-        ],
+      "sign_document_client": {
+        "actor": "client",
         "responses": {
           "ok": {
+            "label": "sign",
             "key": "ok",
-            "display": "always",
-            "transition": ":failed"
+            "display": "always"
+          }
+        }
+      },
+      "sign_document_supplier": {
+        "actor": "supplier",
+        "responses": {
+          "ok": {
+            "label": "sign",
+            "key": "ok",
+            "display": "always"
           }
         }
       }
     },
     "states": {
       ":initial": {
+        "title": "Select supplier",
         "instructions": {
-          "client": "Description for client",
-          "supplier": "Description for supplier"
+          "client": "Fill out this form to select a supplier.",
+          "supplier": ""
         },
-        "actions": [
-          "request_quotation"
-        ],
+        "actions": ["fill_in_form"],
+        "default_action": "fill_in_form",
         "transitions": [
           {
-            "action": "request_quotation",
+            "action": "fill_in_form",
             "response": "ok",
             "condition": null,
-            "transition": "invite_supplier"
+            "transition": "waiting_for_first_signer"
           },
           {
-            "action": "enter_client",
-            "response": "ok",
+            "action": "fill_in_form",
+            "response": "failed",
             "condition": null,
-            "transition": "provide_quote"
+            "transition": "invalid_supplier"
           }
         ]
       },
-      "invite_supplier": {
-        "title": "Waiting on the supplier to participate in this process",
+      "invalid_supplier": {
+        "title": "Invalid Supplier",
         "instructions": {
-          "client": "Description for client",
-          "supplier": "Description for supplier"
+          "client": "The chosen supplier doesn't have the authority to sign.",
+          "supplier": "You do not have the authority to sign the document."
         },
-        "actions": [
-          "invite_supplier",
-          "cancel"
-        ],
-        "default_action": "invite_supplier",
+        "actions": ["end_process"],
+        "default_action": "end_process",
         "transitions": [
           {
-            "action": "invite_supplier",
+            "action": "end_process",
             "response": "ok",
             "condition": null,
-            "transition": "wait_for_quote"
+            "transition": "success"
           }
         ]
       },
-      "provide_quote": {
-        "title": "Prepare quotation",
-        "instructions": {
-          "client": "Description for client",
-          "supplier": "Description for supplier"
-        },
-        "actions": [
-          "upload",
-          "cancel"
-        ],
-        "default_action": "upload",
+      "waiting_for_first_signer": {
+        "title": "Waiting for signers",
+        "description": "Waiting on both parties to sign",
+        "actions": ["sign_document_client", "sign_document_supplier"],
         "transitions": [
           {
-            "action": "upload",
+            "action": "sign_document_client",
             "response": "ok",
             "condition": null,
-            "transition": "invite_client"
+            "transition": "waiting_for_supplier"
+          },
+          {
+            "action": "sign_document_supplier",
+            "response": "ok",
+            "condition": null,
+            "transition": "waiting_for_client"
           }
         ]
       },
-      "invite_client": {
-        "title": "Waiting on the client to participate in this process",
+      "waiting_for_supplier": {
+        "title": "Waiting for supplier",
         "instructions": {
-          "client": "Description for client",
-          "supplier": "Description for supplier"
+          "client": "Wait for the supplier to sign the document",
+          "supplier": "Please sign the document to finish the process"
         },
-        "actions": [
-          "invite_client",
-          "cancel"
-        ],
-        "default_action": "invite_client",
+        "actions": ["sign_document_supplier"],
+        "default_action": "sign_document_supplier",
         "transitions": [
           {
-            "action": "invite_client",
+            "action": "sign_document_supplier",
             "response": "ok",
-            "condition": null,
-            "transition": "wait_for_review"
-          }
-        ]
-      },
-      "wait_for_quote": {
-        "title": "Prepare quotation",
-        "instructions": {
-          "client": "Description for client",
-          "supplier": "Description for supplier"
-        },
-        "actions": [
-          "upload",
-          "cancel"
-        ],
-        "default_action": "upload",
-        "transitions": [
-          {
-            "action": "upload",
-            "response": "ok",
-            "condition": null,
-            "transition": "wait_for_review"
-          }
-        ],
-        "timeout": {}
-      },
-      "wait_for_review": {
-        "title": "Review quotation",
-        "instructions": {
-          "client": "Please review and accept the quotation",
-          "supplier": "Please wait for the client to review the quotation."
-        },
-        "actions": [
-          "review",
-          "cancel"
-        ],
-        "default_action": "review",
-        "transitions": [
-          {
-            "action": "review",
-            "response": "accept",
             "condition": null,
             "transition": ":success"
-          },
-          {
-            "action": "review",
-            "response": "deny",
-            "condition": null,
-            "transition": ":failed"
           }
-        ],
-        "timeout": "7d"
+        ]
+      },
+      "waiting_for_client": {
+        "title": "Waiting for client",
+        "instructions": {
+          "client": "Please sign the document to finish the process",
+          "supplier": "Wait for the client to sign the document"
+        },
+        "actions": ["sign_document_client"],
+        "default_action": "sign_document_client",
+        "transitions": [
+          {
+            "action": "sign_document_client",
+            "response": "ok",
+            "condition": null,
+            "transition": ":success"
+          }
+        ]
       },
       ":success": {
         "actions": [],
@@ -287,11 +182,7 @@
           },
           "urgency": {
             "type": "string",
-            "enum": [
-              "normal",
-              "high",
-              "critical"
-            ]
+            "enum": ["normal", "high", "critical"]
           }
         }
       },
@@ -359,6 +250,18 @@
                 "label": "E-mail",
                 "name": "email",
                 "required": true
+              },
+              {
+                "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+                "label": "Public Key Person",
+                "name": "public_key_person",
+                "required": true
+              },
+              {
+                "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+                "label": "Public Key Company",
+                "name": "public_key_company",
+                "required": true
               }
             ]
           }
@@ -367,14 +270,8 @@
     },
     "info": {},
     "permissions": {
-      "*": [
-        "read"
-      ],
-      "admin": [
-        "read",
-        "write",
-        "delete"
-      ]
+      "*": ["read"],
+      "admin": ["read", "write", "delete"]
     },
     "identity": {
       "id": "0c1d7eac-18ec-496a-8713-8e6e5f098686",

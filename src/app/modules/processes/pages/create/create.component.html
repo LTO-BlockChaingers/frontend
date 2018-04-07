@@ -42,7 +42,7 @@
           </mat-form-field>
         </form>
         <div class="actions">
-          <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="checkLiability(address.value, against.value)">Check</button>
+          <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="checkLiability(address.value, against.value, form.value)">Check</button>
         </div>
       </div>
       <div class="liability">

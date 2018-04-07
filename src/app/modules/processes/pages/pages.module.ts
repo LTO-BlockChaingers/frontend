@@ -12,6 +12,10 @@ import { RouterModule } from '@angular/router';
             loadChildren: './create/create.module#CreateModule'
           },
           {
+            path: 'details/:id',
+            loadChildren: './details/details.module#DetailsModule'
+          },
+          {
             path: '',
             loadChildren: './list/list.module#ListModule'
           }
