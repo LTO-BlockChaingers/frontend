@@ -7,7 +7,11 @@ import { Observable } from 'rxjs/Observable';
 export class MockProcessesRepository implements ProcessesRepository {
   constructor(public http: HttpClient) {}
 
-  list(): Observable<any[]> {
+  get(id: string): Observable<any> {
     return this.http.get<any>('/assets/mocks/process.json');
+  }
+
+  list(): Observable<any[]> {
+    return this.http.get<any>('/assets/mocks/processes.json');
   }
 }

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { ProcessesRepository } from '../../processes.repository';
+import { publishReplay, refCount } from 'rxjs/operators';
 
 @Component({
   selector: 'app-details',
@@ -6,14 +9,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
-  process: any = {
-    previous: [],
-    next: []
-  };
 
-  actor: any = {};
+  process$: Observable<any>;
 
-  constructor() {}
+  actor: any = 'client';
+
+  constructor(private processesRepo: ProcessesRepository) {
+    this.process$ = this.processesRepo.get('test').pipe(publishReplay(1), refCount());
+  }
 
   ngOnInit() {}
 

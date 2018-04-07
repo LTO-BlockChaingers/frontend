@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ScenarioSchema } from '../../../../models';
 
 /**
  * Take properties from schema
@@ -18,6 +19,7 @@ interface State {
   styleUrls: ['./current-state.component.scss']
 })
 export class CurrentStateComponent implements OnInit {
+  @Input() scenarioId: string;
   @Input() state!: State; //
   @Input() actor!: string;
   @Output() action = new EventEmitter<any>();
@@ -30,6 +32,8 @@ export class CurrentStateComponent implements OnInit {
   }
 
   get defaultAction(): any {
+    console.log('state', this.state);
+    console.log('scenario', this.scenarioId);
     return this.state.default_action.actor.includes(this.actor) ? this.state.default_action : null;
   }
 

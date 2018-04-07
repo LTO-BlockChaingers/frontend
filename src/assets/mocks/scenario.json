@@ -1,0 +1,312 @@
+{
+  "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5eev=799ZMMdm",
+  "name": "Sign an agreement",
+  "description": "Sign an agreement with an authorized party",
+  "actors": {
+    "client": {
+    },
+    "supplier": {
+    }
+  },
+  "actions": {
+    "fill_in_form": {
+      "actor": "client",
+      "responses": {
+        "ok": {
+          "label": "fill in",
+          "key": "ok",
+          "display": "always",
+          "update": {
+            "select": "actors.supplier",
+            "data": {
+              "$schema": "http://specs.livecontracts.io/draft-01/10-document/schema.json#",
+              "id": { "<ref>": "response.data.id" },
+              "name": { "<ref>": "response.data.name" },
+              "email": { "<ref>": "response.data.email" },
+              "signkeys": { "user": { "<ref>": "response.data.encoding" } }
+            }
+          }
+        },
+        "failed": {
+          "key": "failed"
+        }
+      },
+      "form": {
+        "<ref>": "definitions.client_form"
+      }
+    },
+    "end_process": {
+      "actor": "client",
+      "responses": {
+        "ok": {
+          "label": "End process",
+          "key": "ok",
+          "display": "always"
+        }
+      }
+    },
+    "sign_document_client": {
+      "actor": "client",
+      "responses": {
+        "ok": {
+          "label": "sign",
+          "key": "ok",
+          "display": "always"
+        }
+      }
+    },
+    "sign_document_supplier": {
+      "actor": "supplier",
+      "responses": {
+        "ok": {
+          "label": "sign",
+          "key": "ok",
+          "display": "always"
+        }
+      }
+    }
+  },
+  "states": {
+    ":initial": {
+      "title": "Check supplier",
+      "instructions": {
+        "client": "Fill out this form to select a supplier.",
+        "supplier": ""
+      },
+      "actions": [
+        "fill_in_form"
+      ],
+      "default_action": "fill_in_form",
+      "transitions": [
+        {
+          "action": "fill_in_form",
+          "response": "ok",
+          "condition": null,
+          "transition": "invalid_supplier"
+        },
+        {
+          "action": "fill_in_form",
+          "response": "failed",
+          "condition": null,
+          "transition": "invalid_supplier"
+        }
+      ]
+    },
+    "invalid_supplier": {
+      "title": "Invalid Supplier",
+      "instructions": {
+        "client": "The chosen supplier doesn't have the authority to sign.",
+        "supplier": "You do not have the authority to sign the document."
+      },
+      "actions": [
+        "end_process"
+      ],
+      "default_action": "end_process",
+      "transitions": [
+        {
+          "action": "end_process",
+          "response": "ok",
+          "condition": null,
+          "transition": "success"
+        }
+      ]
+    },
+    "waiting_for_first_signer": {
+      "title": "Waiting for signers",
+      "description": "Waiting on both parties to sign",
+      "default_action": "sign_document_client",
+      "actions": [
+        "sign_document_client",
+        "sign_document_supplier"
+      ],
+      "transitions": [
+        {
+          "action": "sign_document_client",
+          "response": "ok",
+          "condition": null,
+          "transition": "waiting_for_supplier"
+        },
+        {
+          "action": "sign_document_supplier",
+          "response": "ok",
+          "condition": null,
+          "transition": "waiting_for_client"
+        }
+      ]
+    },
+    "waiting_for_supplier": {
+      "title": "Waiting for supplier",
+      "instructions": {
+        "client": "Wait for the supplier to sign the document",
+        "supplier": "Please sign the document to finish the process"
+      },
+      "actions": [
+        "sign_document_supplier"
+      ],
+      "default_action": "sign_document_supplier",
+      "transitions": [
+        {
+          "action": "sign_document_supplier",
+          "response": "ok",
+          "condition": null,
+          "transition": ":success"
+        }
+      ]
+    },
+    "waiting_for_client": {
+      "title": "Waiting for client",
+      "instructions": {
+        "client": "Please sign the document to finish the process",
+        "supplier": "Wait for the client to sign the document"
+      },
+      "actions": [
+        "sign_document_client"
+      ],
+      "default_action": "sign_document_client",
+      "transitions": [
+        {
+          "action": "sign_document_client",
+          "response": "ok",
+          "condition": null,
+          "transition": ":success"
+        }
+      ]
+    },
+    ":success": {
+      "actions": [],
+      "transitions": []
+    },
+    ":failed": {
+      "actions": [],
+      "transitions": []
+    }
+  },
+  "assets": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "high",
+            "critical"
+          ]
+        }
+      }
+    },
+    "quotation": {
+      "$ref": "http://specs.livecontracts.io/draft-01/10-document/schema.json#"
+    }
+  },
+  "definitions": {
+    "request_form": {
+      "title": "Quotation request form",
+      "definition": [
+        {
+          "fields": [
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
+              "label": "Supplier",
+              "name": "supplier",
+              "url": "https://jsonplaceholder.typicode.com/users",
+              "optionText": "name",
+              "optionValue": "{ name, email, phone }",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#textarea",
+              "label": "Description",
+              "name": "description",
+              "helptip": "Which service would you like a quotation for?"
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#select",
+              "label": "Urgency",
+              "name": "urgency",
+              "options": [
+                {
+                  "value": "normal",
+                  "label": "Normal"
+                },
+                {
+                  "value": "high",
+                  "label": "High"
+                },
+                {
+                  "value": "critical",
+                  "label": "Critical"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "client_form": {
+      "title": "Enter client information",
+      "definition": [
+        {
+          "fields": [
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+              "label": "Name",
+              "name": "name",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#email",
+              "label": "E-mail",
+              "name": "email",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+              "label": "Public Key Person",
+              "name": "public_key_person",
+              "required": true
+            },
+            {
+              "$schema": "http://specs.legalthings.one/draft-01/08-form/schema.json#text",
+              "label": "Public Key Company",
+              "name": "public_key_company",
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "info": {},
+  "permissions": {
+    "*": [
+      "read"
+    ],
+    "admin": [
+      "read",
+      "write",
+      "delete"
+    ]
+  },
+  "identity": {
+    "id": "0c1d7eac-18ec-496a-8713-8e6e5f098686",
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "node": "",
+    "signkeys": {
+      "user": "FkU1XyfrCftc4pQKXCrrDyRLSnifX1SMvmx1CYiiyB3Y"
+    },
+    "encryptkey": "BVv1ZuE3gKFa6krwWJQwEmrLYUESuUabNCXgYTmCoBt6",
+    "privileges": null,
+    "timestamp": "2018-03-30T16:01:40+0000",
+    "info": null,
+    "$schema": "http://specs.livecontracts.io/draft-01/02-identity/schema.json#"
+  },
+  "timestamp": "2018-03-30T16:01:41+0000",
+  "keywords": [],
+  "tags": [],
+  "$schema": "http://specs.livecontracts.io/draft-01/04-scenario/schema.json#"
+}

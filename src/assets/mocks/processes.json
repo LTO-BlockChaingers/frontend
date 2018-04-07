@@ -1,3 +1,4 @@
+[
 {
   "id": "10969b30-9160-4c22-bd3b-32820c9e2fb7",
   "name": "Sign an agreement",
@@ -31,29 +32,10 @@
   "current": {
     "title": "Waiting for signers",
     "description": "Waiting on both parties to sign",
-    "default_action": "sign_document_client",
-    "actions": {
-      "sign_document_client": {
-        "actor": "client",
-        "responses": {
-          "ok": {
-            "label": "sign",
-            "key": "ok",
-            "display": "always"
-          }
-        }
-      },
-      "sign_document_supplier": {
-        "actor": "supplier",
-        "responses": {
-          "ok": {
-            "label": "sign",
-            "key": "ok",
-            "display": "always"
-          }
-        }
-      }
-    },
+    "actions": [
+      "sign_document_client",
+      "sign_document_supplier"
+    ],
     "transitions": [
       {
         "action": "sign_document_client",
@@ -203,3 +185,4 @@
   ],
   "state": "running"
 }
+]
