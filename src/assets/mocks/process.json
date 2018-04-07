@@ -21,6 +21,7 @@
       "id": "lt:/processes/10969b30-9160-4c22-bd3b-32820c9e2fb7/actions/fill_in_form/responses/ok",
       "key": "ok",
       "display": "always",
+      "title": "Provided information to identify the supplier",
       "action": "fill_in_form",
       "actor": "client",
       "data": [],
@@ -32,8 +33,9 @@
     "title": "Waiting for signers",
     "description": "Waiting on both parties to sign",
     "default_action": "sign_document_client",
-    "actions": {
-      "sign_document_client": {
+    "actions": [
+      {
+        "key": "sign_document_client",
         "actor": "client",
         "responses": {
           "ok": {
@@ -43,7 +45,8 @@
           }
         }
       },
-      "sign_document_supplier": {
+      {
+        "key": "sign_document_supplier",
         "actor": "supplier",
         "responses": {
           "ok": {
@@ -53,7 +56,7 @@
           }
         }
       }
-    },
+    ],
     "transitions": [
       {
         "action": "sign_document_client",

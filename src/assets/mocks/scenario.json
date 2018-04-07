@@ -14,6 +14,7 @@
       "responses": {
         "ok": {
           "label": "fill in",
+          "title": "Provided information and verified identify of the supplier",
           "key": "ok",
           "display": "always",
           "update": {
