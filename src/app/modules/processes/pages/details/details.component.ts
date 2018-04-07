@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ProcessesRepository } from '../../processes.repository';
 import { publishReplay, refCount } from 'rxjs/operators';
@@ -14,8 +15,11 @@ export class DetailsComponent implements OnInit {
 
   actor: any = 'client';
 
-  constructor(private processesRepo: ProcessesRepository) {
-    this.process$ = this.processesRepo.get('test').pipe(publishReplay(1), refCount());
+  constructor(private processesRepo: ProcessesRepository, private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.process$ = this.processesRepo.get(params.id).pipe(publishReplay(1), refCount());
+    });
+
   }
 
   ngOnInit() {}
