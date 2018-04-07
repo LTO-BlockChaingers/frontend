@@ -3,6 +3,11 @@
  */
 export class Privilege {
   /**
+   * todo
+   */
+  schema: string;
+
+  /**
    * Privilege only applies to this resource
    */
   id: string;
@@ -23,6 +28,7 @@ export class Privilege {
   signkey: string[];
 
   constructor(data: any) {
+    this.schema = data.schema;
     this.id = data.id;
     this.only = data.only;
     this.not = data.not;

@@ -7,6 +7,7 @@ import { FormMetadata } from '@app/models/forms';
 import { v4 as uuid } from 'uuid';
 import { AuthStore } from '@modules/auth';
 import { Identity, EventChain, Response, BlockchainRepository } from '@modules/blockchain';
+import { Privilege } from '@app/modules/blockchain/models/privilege';
 import { NavbarService } from '@shared/components/navbar/navbar.service';
 import { Router } from '@angular/router';
 
@@ -34,7 +35,7 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   activateScenario(scenario: ScenarioSchema) {
     this.selectedScenario = scenario;
@@ -68,9 +69,10 @@ export class CreateComponent implements OnInit {
     const initialState = this.selectedScenario.states[':initial'];
     const signKey = '';
     const encryptionKey = '';
+    const identityUuid = '0c1d7eac-18ec-496a-8713-8e6e5f098686'; // uuid(); // hardcoded temporarily  (scenario actor id must match this id)
 
     const identitiy = new Identity({
-      id: uuid(),
+      id: identityUuid,
       name: user.name,
       email: user.email,
       signkeys: {
@@ -85,8 +87,12 @@ export class CreateComponent implements OnInit {
     chain.add(JSON.stringify(this.selectedScenario), user.keyPair);
     // Now we need to create first 'response' for this process
     const response = Response.buildInRuntime({
+      key: 'ok',
       process: {
-        id: 'lt:/processes/' + uuid()
+        id: 'lt:/processes/' + uuid(),
+        scenario: {
+          id: this.selectedScenario.id
+        }
       },
       action: {
         key: initialState.actions[0]
@@ -99,6 +105,7 @@ export class CreateComponent implements OnInit {
       },
       data: this.responseData // Action response DATA (from form)
     });
+
     chain.add(JSON.stringify(response), user.keyPair);
 
     // After creation we have to save this chain locally

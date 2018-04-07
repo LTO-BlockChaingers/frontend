@@ -13,7 +13,7 @@ export class Identity {
   email: string;
   info: object | null;
   node: string;
-  privileges: Privilege[];
+  privileges: Privilege[] | null;
 
   signkeys: {
     system: string;
@@ -29,7 +29,7 @@ export class Identity {
     this.node = data.node || '';
     this.privileges = data.privileges
       ? data.privileges.map((privilege: any) => new Privilege(privilege))
-      : [];
+      : null;
 
     if (!data.signkeys) {
       throw 'Unable to create Identity without signkeys!';

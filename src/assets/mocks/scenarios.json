@@ -1,6 +1,6 @@
 [
   {
-    "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5ee?v=H9eAveK7",
+    "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5ee?v=8AaeAiE2",
     "name": "Accept or reject a quotation",
     "description": "Accept or reject a quotation",
     "actors": {
@@ -124,7 +124,10 @@
         }
       },
       "cancel": {
-        "actor": ["client", "supplier"],
+        "actor": [
+          "client",
+          "supplier"
+        ],
         "responses": {
           "ok": {
             "key": "ok",
@@ -140,7 +143,9 @@
           "client": "Description for client",
           "supplier": "Description for supplier"
         },
-        "actions": ["request_quotation"],
+        "actions": [
+          "request_quotation"
+        ],
         "transitions": [
           {
             "action": "request_quotation",
@@ -162,7 +167,10 @@
           "client": "Description for client",
           "supplier": "Description for supplier"
         },
-        "actions": ["invite_supplier", "cancel"],
+        "actions": [
+          "invite_supplier",
+          "cancel"
+        ],
         "default_action": "invite_supplier",
         "transitions": [
           {
@@ -179,7 +187,10 @@
           "client": "Description for client",
           "supplier": "Description for supplier"
         },
-        "actions": ["upload", "cancel"],
+        "actions": [
+          "upload",
+          "cancel"
+        ],
         "default_action": "upload",
         "transitions": [
           {
@@ -196,7 +207,10 @@
           "client": "Description for client",
           "supplier": "Description for supplier"
         },
-        "actions": ["invite_client", "cancel"],
+        "actions": [
+          "invite_client",
+          "cancel"
+        ],
         "default_action": "invite_client",
         "transitions": [
           {
@@ -213,7 +227,10 @@
           "client": "Description for client",
           "supplier": "Description for supplier"
         },
-        "actions": ["upload", "cancel"],
+        "actions": [
+          "upload",
+          "cancel"
+        ],
         "default_action": "upload",
         "transitions": [
           {
@@ -231,7 +248,10 @@
           "client": "Please review and accept the quotation",
           "supplier": "Please wait for the client to review the quotation."
         },
-        "actions": ["review", "cancel"],
+        "actions": [
+          "review",
+          "cancel"
+        ],
         "default_action": "review",
         "transitions": [
           {
@@ -267,7 +287,11 @@
           },
           "urgency": {
             "type": "string",
-            "enum": ["normal", "high", "critical"]
+            "enum": [
+              "normal",
+              "high",
+              "critical"
+            ]
           }
         }
       },
@@ -343,8 +367,14 @@
     },
     "info": {},
     "permissions": {
-      "*": ["read"],
-      "admin": ["read", "write", "delete"]
+      "*": [
+        "read"
+      ],
+      "admin": [
+        "read",
+        "write",
+        "delete"
+      ]
     },
     "identity": {
       "id": "0c1d7eac-18ec-496a-8713-8e6e5f098686",
