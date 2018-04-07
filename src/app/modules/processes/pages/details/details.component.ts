@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailsComponent implements OnInit {
   process: any = {
-    previous: []
+    previous: [],
+    next: []
   };
 
   actor: any = {};

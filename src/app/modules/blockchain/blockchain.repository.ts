@@ -8,6 +8,6 @@ export class BlockchainRepository {
 
   post(chain: EventChain) {
     console.log('chain', chain);
-    return this.http.post<EventChain>('http://localhost:3000/api/events/event-chains', chain);
+    return this.http.post<EventChain>('/api/events/event-chains', chain);
   }
 }
