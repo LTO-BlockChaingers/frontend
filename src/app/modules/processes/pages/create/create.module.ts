@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CreateComponent } from './create.component';
-import { MatStepperModule, MatButtonModule, MatListModule } from '@angular/material';
+import { MatStepperModule, MatButtonModule, MatListModule, MatIconModule } from '@angular/material';
 import { FormsModule as LcFormsModule } from '@modules/forms';
+import { LiabilityCheckerComponent } from './component/liability-checker/liability-checker.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { FormsModule as LcFormsModule } from '@modules/forms';
     MatButtonModule,
     MatListModule,
     LcFormsModule,
+    MatIconModule,
     RouterModule.forChild([
       {
         path: '',
@@ -19,6 +21,6 @@ import { FormsModule as LcFormsModule } from '@modules/forms';
       }
     ])
   ],
-  declarations: [CreateComponent]
+  declarations: [CreateComponent, LiabilityCheckerComponent]
 })
 export class CreateModule {}

@@ -1,0 +1,6 @@
+<mat-list [@listAnimation]="(certificateChain$ | async).length">
+  <mat-list-item *ngFor="let certificate of certificateChain$ | async">
+    <mat-icon mat-list-icon class="success">check_circle</mat-icon>
+    <h4 mat-line>{{certificate.address}}</h4>
+  </mat-list-item>
+</mat-list>

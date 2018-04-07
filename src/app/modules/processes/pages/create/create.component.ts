@@ -7,6 +7,8 @@ import { FormMetadata } from '@app/models/forms';
 import { v4 as uuid } from 'uuid';
 import { AuthStore } from '@modules/auth';
 import { Identity, EventChain, Response, BlockchainRepository } from '@modules/blockchain';
+import { NavbarService } from '@shared/components/navbar/navbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
@@ -22,9 +24,14 @@ export class CreateComponent implements OnInit {
   constructor(
     private scenariosRepo: ScenariosRepository,
     private auth: AuthStore,
-    private blockchainRepo: BlockchainRepository
+    private blockchainRepo: BlockchainRepository,
+    private navbar: NavbarService,
+    private router: Router
   ) {
     this.scenarios$ = scenariosRepo.list().pipe(publishReplay(1), refCount());
+    this.navbar.modalMode('Create process').subscribe(() => {
+      this.cancel();
+    });
   }
 
   ngOnInit() {}
@@ -37,6 +44,11 @@ export class CreateComponent implements OnInit {
     if (initialAction['form']) {
       this.formMetadata = new FormMetadata(initialAction['form']);
     }
+  }
+
+  cancel() {
+    this.navbar.resetToDefaults();
+    this.router.navigate(['..']);
   }
 
   formChanges(value: any) {

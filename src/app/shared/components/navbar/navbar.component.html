@@ -1,7 +1,10 @@
 <mat-toolbar color="primary" class="mat-elevation-z6">
   <mat-toolbar-row>
+    <button mat-icon-button *ngIf="navbarService.isModal$ | async" (click)="navbarService.closeClick()">
+      <mat-icon>close</mat-icon>
+    </button>
     <a class="brand" routerLink="/">
-      <ng-content select="[navbarTitle]"></ng-content>
+      {{navbarService.title$ | async}}
     </a>
     <span class="flex"></span>
     <!-- <button mat-raised-button color="primary" (click)="logout()" *ngIf="auth.authenticated$ | async">
