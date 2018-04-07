@@ -163,7 +163,7 @@ export class CreateComponent implements OnInit {
   async checkLiability(addressToCheck: string, against: string, formData: any): Promise<boolean> {
     this.certificates = [];
     const LICENSE_TYPE = 'some_license_type';
-    let valid = false;
+    let valid = true;
     const initialState = this.selectedScenario.states[':initial'];
 
     const user = await this.auth.user$.pipe(take(1)).toPromise();
