@@ -7,6 +7,6 @@ export class ProcessesRepository {
   constructor(private http: HttpClient) {}
 
   list(): Observable<any[]> {
-    return this.http.get<any[]>('/api/processes');
+    return this.http.get<any[]>('/api/flow/processes');
   }
 }
