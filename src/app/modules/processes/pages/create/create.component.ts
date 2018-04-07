@@ -47,6 +47,9 @@ export class CreateComponent implements OnInit {
 
   certificates: SertificateValidity[] = [];
 
+  eventChain: EventChain;
+  identity: Identity;
+
   constructor(
     private scenariosRepo: ScenariosRepository,
     private auth: AuthStore,
@@ -61,7 +64,29 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    const user = await this.auth.user$.pipe(take(1)).toPromise();
+
+    if (!user) {
+      return;
+    }
+
+    const identityUuid = uuid();
+    const signKey = '';
+    const encryptionKey = '';
+    this.identity = new Identity({
+      id: identityUuid,
+      name: user.name,
+      email: user.email,
+      signkeys: {
+        system: signKey,
+        user: user.keyPair.public
+      },
+      encryptkey: encryptionKey
+    });
+
+    this.eventChain = EventChain.startNewChain(this.identity, user.keyPair);
+  }
 
   activateScenario(scenario: ScenarioSchema) {
     this.selectedScenario = scenario;
@@ -97,20 +122,9 @@ export class CreateComponent implements OnInit {
     const encryptionKey = '';
     const identityUuid = uuid();
 
-    const identitiy = new Identity({
-      id: identityUuid,
-      name: user.name,
-      email: user.email,
-      signkeys: {
-        system: signKey,
-        user: user.keyPair.public
-      },
-      encryptkey: encryptionKey
-    });
-
-    const chain = EventChain.startNewChain(identitiy, user.keyPair);
     // Now we have to create first event for a process which contains scenario information
-    chain.add(JSON.stringify(this.selectedScenario), user.keyPair);
+    this.eventChain.add(JSON.stringify(this.selectedScenario), user.keyPair);
+
     // Now we need to create first 'response' for this process
     const response = Response.buildInRuntime({
       key: 'ok', // @todo pass chosen response here
@@ -125,20 +139,20 @@ export class CreateComponent implements OnInit {
       },
       actor: {
         key: this.selectedScenario.actions[initialState.actions[0]].actor, // actor from scenario.actions,
-        id: identitiy.id, // identitiy ID,
+        id: this.identity.id, // identitiy ID,
         name: user.name, // name of the user,
         email: user.email // useremail
       },
       data: this.responseData // Action response DATA (from form)
     });
 
-    chain.add(JSON.stringify(response), user.keyPair);
+    this.eventChain.add(JSON.stringify(response), user.keyPair);
 
     // After creation we have to save this chain locally
     // this.dataService.saveChain(chain);
-    this.blockchainRepo.post(chain);
+    this.blockchainRepo.post(this.eventChain);
 
-    return chain;
+    return this.eventChain;
   }
 
   async checkLiability(addressToCheck: string, against: string): Promise<boolean> {
@@ -179,15 +193,6 @@ export class CreateComponent implements OnInit {
       // Check further
       address = value.emitter;
     }
-
-    // const acc_a = {
-    //   key: 'license', // LICESE_TPE
-    //   value: `{
-    //     emitter: 'ADDRES_OF_EMMITER',
-    //     reissuable: false,
-    //     root?: true
-    //   }` // BASE58 string of JSON object
-    // };
 
     return true;
   }

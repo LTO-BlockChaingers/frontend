@@ -15,7 +15,7 @@
         <button mat-button color="primary" (click)="cancel()">Cancel</button>
       </div>
     </mat-step>
-    <mat-step label="Fill initial values">
+    <!-- <mat-step label="Fill initial values">
       <div class="step-content">
         <div class="first-action">
           <lc-form *ngIf="formMetadata" [metadata]="formMetadata" (valueChange)="formChanges($event)" #form="lcForm"></lc-form>
@@ -24,17 +24,25 @@
       <div class="step-buttons">
         <button mat-raised-button color="primary" (click)="createProcess()">Create</button>
       </div>
-    </mat-step>
+    </mat-step> -->
     <mat-step label="Check liability">
       <div class="check-form">
-        <mat-form-field>
-          <input type="text" matInput placeholder="Address to check" required ngModel #address="ngModel">
-        </mat-form-field>
-        <mat-form-field>
-          <input type="text" matInput placeholder="Address to check against" required ngModel #against="ngModel">
-        </mat-form-field>
+        <form #form="ngForm">
+          <mat-form-field>
+            <input type="text" matInput placeholder="Name of other user" required ngModel #name="ngModel" name="name">
+          </mat-form-field>
+          <mat-form-field>
+            <input type="email" matInput placeholder="Email of other user" required ngModel #email="ngModel" name="email">
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Address to check" required ngModel #address="ngModel" name="address">
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Address to check against" required ngModel #against="ngModel" name="against">
+          </mat-form-field>
+        </form>
         <div class="actions">
-          <button mat-raised-button color="primary" [disabled]="address.invalid || against.invalid" (click)="checkLiability(address.value, against.value)">Check</button>
+          <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="checkLiability(address.value, against.value)">Check</button>
         </div>
       </div>
       <div class="liability">
