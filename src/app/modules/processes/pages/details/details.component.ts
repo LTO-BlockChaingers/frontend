@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
+  process: any = {
+    previous: []
+  };
 
-  constructor() { }
+  actor: any = {};
 
-  ngOnInit() {
-  }
+  constructor() {}
 
+  ngOnInit() {}
 }
