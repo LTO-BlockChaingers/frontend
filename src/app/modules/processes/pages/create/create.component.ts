@@ -69,7 +69,7 @@ export class CreateComponent implements OnInit {
     const initialState = this.selectedScenario.states[':initial'];
     const signKey = '';
     const encryptionKey = '';
-    const identityUuid = '0c1d7eac-18ec-496a-8713-8e6e5f098686'; // uuid(); // hardcoded temporarily  (scenario actor id must match this id)
+    const identityUuid = uuid();
 
     const identitiy = new Identity({
       id: identityUuid,
@@ -87,7 +87,7 @@ export class CreateComponent implements OnInit {
     chain.add(JSON.stringify(this.selectedScenario), user.keyPair);
     // Now we need to create first 'response' for this process
     const response = Response.buildInRuntime({
-      key: 'ok',
+      key: 'ok', // @todo pass chosen response here
       process: {
         id: 'lt:/processes/' + uuid(),
         scenario: {

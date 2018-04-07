@@ -3,7 +3,7 @@
  */
 export class Privilege {
   /**
-   * todo
+   * @todo: add description
    */
   schema: string;
 
