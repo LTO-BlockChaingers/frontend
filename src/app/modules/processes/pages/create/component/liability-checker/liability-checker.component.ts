@@ -47,7 +47,6 @@ export class LiabilityCheckerComponent implements OnInit {
         address: 'kkjdkfgjkdjfgfg'
       }
     ];
-
     this.certificateChain$.next(this.items);
   }
 

@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  padding: 16px;
+}
+.wrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  background: white;
+}
+
+.header {
+  padding: 16px;
+  display: flex;
+
+  .search-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      padding-left: 10px;
+    }
+  }
+}
+
+.no-processes-placehodler {
+  height: 500px;
+  background: url('/assets/nothing_bg.png');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 24px;
+}

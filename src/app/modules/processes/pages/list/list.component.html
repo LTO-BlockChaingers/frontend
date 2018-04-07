@@ -1,6 +1,45 @@
-<p>
-  list works!
-  <br>
-  <a routerLink="create">Create</a>
+<div class="wrapper mat-elevation-z1">
+  <div class="header">
+    <div class="search-container">
+      <mat-icon>search</mat-icon>
+      <input placeholder="Search" #quickSearchInput>
+    </div>
+    <div class="buttons">
+      <a mat-raised-button color="primary" routerLink="create">Create</a>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="processes$ | async as processes; else loading">
+    <ng-container *ngIf="processes.length; else noProcesses">
+      <mat-table [dataSource]="processes">
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell *matCellDef="let chain">{{chain.id}}</mat-cell>
+        </ng-container>
 
-</p>
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+          <mat-cell *matCellDef="let chain">
+            <mat-icon *ngIf="chain.local">schedule</mat-icon>
+            <mat-icon *ngIf="!chain.local">public</mat-icon>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let chain; columns: displayedColumns" [routerLink]="chain.id"></mat-row>
+      </mat-table>
+    </ng-container>
+
+  </ng-container>
+
+</div>
+
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
+
+<ng-template #noProcesses>
+  <div class="no-processes-placehodler">
+    You have no processes
+  </div>
+</ng-template>
