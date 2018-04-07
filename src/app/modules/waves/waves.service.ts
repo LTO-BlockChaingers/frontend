@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as Waves from './waves-api'
+import * as Waves from 'wavesplatform'
 
 @Injectable()
 export class WavesService {
