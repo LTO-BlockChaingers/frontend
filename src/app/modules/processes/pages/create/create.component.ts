@@ -10,11 +10,34 @@ import { Identity, EventChain, Response, BlockchainRepository } from '@modules/b
 import { Privilege } from '@app/modules/blockchain/models/privilege';
 import { NavbarService } from '@shared/components/navbar/navbar.service';
 import { Router } from '@angular/router';
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
+import { WavesService } from '@modules/waves';
+import base58 from '@utils/base58';
+
+interface SertificateValidity {
+  valid: boolean;
+  address: string;
+}
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss']
+  styleUrls: ['./create.component.scss'],
+  animations: [
+    trigger('listAnimation', [
+      transition('* => *', [
+        // // each time the binding value changes
+        // query(':leave', [stagger(100, [animate('0.5s', style({ opacity: 0 }))])], {
+        //   optional: true
+        // }),
+        query(
+          ':enter',
+          [style({ opacity: 0 }), stagger(100, [animate('0.5s', style({ opacity: 1 }))])],
+          { optional: true }
+        )
+      ])
+    ])
+  ]
 })
 export class CreateComponent implements OnInit {
   scenarios$: Observable<ScenarioSchema[]>;
@@ -22,12 +45,15 @@ export class CreateComponent implements OnInit {
   formMetadata: any; // Form metadata
   responseData: any = {};
 
+  certificates: SertificateValidity[] = [];
+
   constructor(
     private scenariosRepo: ScenariosRepository,
     private auth: AuthStore,
     private blockchainRepo: BlockchainRepository,
     private navbar: NavbarService,
-    private router: Router
+    private router: Router,
+    private waves: WavesService
   ) {
     this.scenarios$ = scenariosRepo.list().pipe(publishReplay(1), refCount());
     this.navbar.modalMode('Create process').subscribe(() => {
@@ -35,7 +61,7 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   activateScenario(scenario: ScenarioSchema) {
     this.selectedScenario = scenario;
@@ -113,5 +139,63 @@ export class CreateComponent implements OnInit {
     this.blockchainRepo.post(chain);
 
     return chain;
+  }
+
+  async checkLiability(addressToCheck: string, against: string): Promise<boolean> {
+    this.certificates = [];
+    const LICENSE_TYPE = 'some_license_type';
+
+    let address = addressToCheck;
+    while (address) {
+      let wavesData;
+      try {
+        wavesData = await this.waves.getData(address, LICENSE_TYPE);
+      } catch (err) {
+        this.addCheckedCertificate(address, false);
+        return false;
+      }
+
+      if (wavesData.length === 0) {
+        return false;
+      }
+
+      const decodedValue = base58.decode(wavesData[0].value as string);
+      const decodedStr = String.fromCharCode.apply(null, decodedValue);
+      const value = JSON.parse(decodedStr);
+
+      // If right address and it can reissue this license we are done
+      if (address === against && value.reissuable) {
+        this.addCheckedCertificate(address, true);
+        return true;
+      }
+
+      if (!value.reissuable || value.root) {
+        this.addCheckedCertificate(address, false);
+        return false;
+      }
+
+      // Mark current address as valid
+      this.addCheckedCertificate(address, true);
+      // Check further
+      address = value.emitter;
+    }
+
+    // const acc_a = {
+    //   key: 'license', // LICESE_TPE
+    //   value: `{
+    //     emitter: 'ADDRES_OF_EMMITER',
+    //     reissuable: false,
+    //     root?: true
+    //   }` // BASE58 string of JSON object
+    // };
+
+    return true;
+  }
+
+  addCheckedCertificate(address: string, valid: boolean) {
+    this.certificates.push({
+      valid,
+      address
+    });
   }
 }

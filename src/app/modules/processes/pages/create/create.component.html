@@ -26,7 +26,25 @@
       </div>
     </mat-step>
     <mat-step label="Check liability">
-      <app-liability-checker></app-liability-checker>
+      <div class="check-form">
+        <mat-form-field>
+          <input type="text" matInput placeholder="Address to check" required ngModel #address="ngModel">
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Address to check against" required ngModel #against="ngModel">
+        </mat-form-field>
+        <div class="actions">
+          <button mat-raised-button color="primary" [disabled]="address.invalid || against.invalid" (click)="checkLiability(address.value, against.value)">Check</button>
+        </div>
+      </div>
+      <div class="liability">
+        <mat-list [@listAnimation]="certificates.length">
+          <mat-list-item *ngFor="let certificate of certificates">
+            <mat-icon mat-list-icon class="success" [ngClass]="{success: certificate.valid, fail: !certificate.valid}">{{certificate.valid ? 'check_circle' : 'cancel'}}</mat-icon>
+            <h4 mat-line>{{certificate.address}}</h4>
+          </mat-list-item>
+        </mat-list>
+      </div>
     </mat-step>
   </mat-vertical-stepper>
 </div>

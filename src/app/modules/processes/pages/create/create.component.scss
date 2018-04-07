@@ -43,3 +43,19 @@ mat-list-item {
   overflow-y: auto;
   padding-bottom: 8px;
 }
+
+.check-form {
+  max-width: 400px;
+  mat-form-field {
+    display: block;
+  }
+}
+
+.liability {
+  .success {
+    color: green;
+  }
+  .fail {
+    color: red;
+  }
+}
