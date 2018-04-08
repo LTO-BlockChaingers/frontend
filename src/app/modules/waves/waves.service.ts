@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as Waves from 'wavesplatform'
-import * as Utils from 'wavesplatform/utils'
-import * as Scenario1 from 'wavesplatform/createDemoChain'
-import * as Scenario2 from 'wavesplatform/createDemoAssetScenario'
-import * as Crypto from 'wavesplatform/crypto'
+import * as Utils from 'wavesplatform/dist/utils';
+import * as Scenario1 from 'wavesplatform/dist/createDemoChain';
+import * as Scenario2 from 'wavesplatform/dist/createDemoAssetScenario';
+import * as Crypto from 'wavesplatform/dist/crypto'
 import { IWavesAccount } from 'wavesplatform';
+
+
 
 @Injectable()
 export class WavesService {
