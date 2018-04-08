@@ -9,8 +9,7 @@ import { publishReplay, refCount } from 'rxjs/operators';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  displayedColumns = ['id', 'type'];
-  dataSource = [{ id: 'Id 1' }, { id: 'Id 2' }];
+  displayedColumns = ['name', 'id'];
   processes$: Observable<any[]>;
 
   constructor(private processesRepo: ProcessesRepository) {

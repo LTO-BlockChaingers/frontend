@@ -10,7 +10,7 @@
   </mat-card-content>
   <mat-divider *ngIf="defaultAction || actions.length"></mat-divider>
   <mat-card-actions>
-    <button mat-raised-button class="default" color="primary" *ngIf="defaultAction" (click)="emitAction(defaultAction)">{{defaultAction.label}}</button>
-    <button mat-button *ngFor="let action of actions" (click)="emitAction(action)">{{action.label}}</button>
+    <button mat-raised-button class="default" color="primary" *ngIf="defaultAction" [disabled]="isUserAllowedToDo(action)" (click)="emitAction(defaultAction)">{{defaultAction.responses.ok.label}}</button>
+    <button mat-button *ngFor="let action of actions" (click)="emitAction(action)" [disabled]="isUserAllowedToDo(action)">{{action.responses.ok.label}}</button>
   </mat-card-actions>
 </mat-card>

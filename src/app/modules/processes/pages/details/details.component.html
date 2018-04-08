@@ -1,11 +1,9 @@
 <div class="tasks-container">
   <ng-container *ngIf="process$ | async as process; else loading">
-    <div class="hint">Previous</div>
-    <lc-previous-actions [actions]="process.previous" [actor]="actor"></lc-previous-actions>
+    <lc-previous-actions [actions]="process.previous" [actor]="actor$ | async"></lc-previous-actions>
     <div class="hint">Current</div>
-    <lc-current-state [state]="process.current" [scenarioId]="process.scenario" [actor]="actor" (acton)="actionHandler($event)"></lc-current-state>
-    <div class="hint">Next</div>
-    <lc-next-states [states]="process.next" [actor]="actor"></lc-next-states>
+    <lc-current-state [state]="process.current" [scenarioId]="process.scenario" [actor]="actor$ | async" (acton)="actionHandler($event)"></lc-current-state>
+    <!-- <div class="hint">Next</div> -->
+    <!-- <lc-next-states [states]="process.next" [actor]="actor"></lc-next-states> -->
   </ng-container>
-
 </div>

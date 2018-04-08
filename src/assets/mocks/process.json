@@ -7,7 +7,7 @@
       "id": "e36912f1-8ab0-4ea4-b856-183c0484d408",
       "signkeys": {
         "system": "",
-        "user": "C9PErj9yUkTxyZcqjSnMxXM9ARqR7cXyKDAJyuxF3ejd"
+        "user": "4Z4ESdoXPhwxxaMCuUx3DfRhyPzftNpuyFqS9KpDNQRS"
       },
       "email": "developer@legalthings.net",
       "node": "",
@@ -84,11 +84,7 @@
         },
         "urgency": {
           "type": "string",
-          "enum": [
-            "normal",
-            "high",
-            "critical"
-          ]
+          "enum": ["normal", "high", "critical"]
         }
       }
     },
@@ -184,9 +180,7 @@
         "client": "Wait for the supplier to sign the document",
         "supplier": "Please sign the document to finish the process"
       },
-      "actions": [
-        "sign_document_supplier"
-      ],
+      "actions": ["sign_document_supplier"],
       "default_action": "sign_document_supplier",
       "transitions": [
         {

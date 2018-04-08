@@ -14,19 +14,18 @@
       <mat-table [dataSource]="processes">
         <ng-container matColumnDef="id">
           <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-          <mat-cell *matCellDef="let chain">{{chain.id}}</mat-cell>
+          <mat-cell *matCellDef="let process">{{process.id}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="type">
-          <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
-          <mat-cell *matCellDef="let chain">
-            <mat-icon *ngIf="chain.local">schedule</mat-icon>
-            <mat-icon *ngIf="!chain.local">public</mat-icon>
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let process">
+            {{process.name}}
           </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let chain; columns: displayedColumns" [routerLink]="['details', chain.id]"></mat-row>
+        <mat-row *matRowDef="let process; columns: displayedColumns" [routerLink]="['details', process.id]"></mat-row>
       </mat-table>
     </ng-container>
 

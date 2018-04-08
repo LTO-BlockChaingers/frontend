@@ -32,15 +32,8 @@ export class CurrentStateComponent implements OnInit {
   }
 
   get defaultAction(): any {
-    console.log('state', this.state);
-    console.log(typeof this.state.default_action.actor)
-    if (typeof this.state.default_action.actor instanceof String) {
-      return this.state.default_action.actor === this.actor ? this.state.default_action : null;
-    } else if (typeof this.state.default_action.actor instanceof Array) {
-      return this.state.default_action.actor.includes(this.actor) ? this.state.default_action : null;
-    }
-
-    return null;
+    const action = this.state.actions.find(action => action.key === this.state.default_action);
+    return action;
   }
 
   get actions(): any[] {
@@ -60,5 +53,13 @@ export class CurrentStateComponent implements OnInit {
 
   emitAction(action: any) {
     this.action.next(action);
+  }
+
+  isUserAllowedToDo(action: any): boolean {
+    return action.actor === this.actor;
+  }
+
+  tooltipMessage(action: any): string {
+    return this.isUserAllowedToDo(action) ? '' : 'You are not allowed to perform this action';
   }
 }
