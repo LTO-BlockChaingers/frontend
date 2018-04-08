@@ -6,4 +6,7 @@ export interface User {
   address: string;
   encryptedPhrase: string;
   keyPair: KeyPair;
+  identities: {
+    [chainId: string]: string;
+  };
 }

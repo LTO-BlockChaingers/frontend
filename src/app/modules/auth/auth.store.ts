@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map, publishReplay, refCount } from 'rxjs/operators';
+import { map, publishReplay, refCount, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { User } from './models';
 import { LTO, constants } from 'lto-api';
@@ -40,7 +40,8 @@ export class AuthStore {
         private: seed.signKeys.privateKey
       },
       address: seed.address,
-      encryptedPhrase: seed.encrypt(password)
+      encryptedPhrase: seed.encrypt(password),
+      identities: {}
     };
 
     this._saveUser(user);
@@ -50,6 +51,12 @@ export class AuthStore {
 
   getRegisteredEmails() {
     return Object.keys(this._getUsers());
+  }
+
+  addIdentity(chainId: string, identityId: string) {
+    this.user$.pipe(take(1)).subscribe(user => {
+      user.identities[chainId] = identityId;
+    });
   }
 
   private _getUsers(): { [email: string]: User } {
@@ -66,5 +73,6 @@ export class AuthStore {
     const users = this._getUsers();
     users[user.email] = user;
     localStorage.setItem(this._LOCALSTORAGE_KEY, JSON.stringify(users));
+    this._user$.next(user);
   }
 }

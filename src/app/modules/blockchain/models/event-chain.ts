@@ -7,6 +7,7 @@ import { Identity } from './identity';
 export interface EventChainSchema {
   id: string;
   events: EventSchema[];
+  resources?: string[];
 }
 
 /**
@@ -23,6 +24,7 @@ export class EventChain implements EventChainSchema {
    * Chained events
    */
   events: Event[] = [];
+  resources: string[] = [];
 
   local: boolean = false;
 
@@ -36,6 +38,7 @@ export class EventChain implements EventChainSchema {
     chain.local = local;
     chain.id = data.id;
     chain.events = data.events ? data.events.map((e: any) => new Event(e)) : [];
+    chain.resources = data.resources;
 
     return chain;
   }
@@ -86,7 +89,8 @@ export class EventChain implements EventChainSchema {
   toJSON(): EventChainSchema {
     return {
       id: this.id,
-      events: this.events
+      events: this.events,
+      resources: this.resources
     };
   }
 }

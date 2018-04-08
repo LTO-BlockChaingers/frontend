@@ -37,7 +37,9 @@ export class CurrentStateComponent implements OnInit {
   }
 
   get actions(): any[] {
-    return this.state.actions.filter(action => action.actor.includes(this.actor));
+    return this.state.actions.filter(action => {
+      return action.actor === this.actor && action.key !== this.defaultAction.key;
+    });
   }
 
   constructor() {}
