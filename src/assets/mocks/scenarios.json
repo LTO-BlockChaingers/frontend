@@ -1,13 +1,11 @@
 [
   {
-    "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5eev=799ZMMdm",
+    "id": "lt:/scenarios/fe659ffa-537d-461a-abd7-aa0f3643d5ee?v=7XMnvZAK",
     "name": "Sign an agreement",
     "description": "Sign an agreement with an authorized party",
     "actors": {
-      "client": {
-      },
-      "supplier": {
-      }
+      "client": {},
+      "supplier": {}
     },
     "actions": {
       "fill_in_form": {
@@ -84,7 +82,7 @@
             "action": "fill_in_form",
             "response": "ok",
             "condition": null,
-            "transition": "invalid_supplier"
+            "transition": "waiting_for_first_signer"
           },
           {
             "action": "fill_in_form",
@@ -109,7 +107,7 @@
             "action": "end_process",
             "response": "ok",
             "condition": null,
-            "transition": "success"
+            "transition": ":success"
           }
         ]
       },
