@@ -10,14 +10,17 @@ export class BlockchainRepository {
 
   post(chain: EventChain) {
     console.log('chain', chain);
-    return this.http.post<EventChain>('/api/events/event-chains', chain);
+    return this.http.post<EventChain>(
+      'http://blockchaingers.legalthings.io/api/events/event-chains',
+      chain
+    );
   }
 
   list() {
     return (
       this.http
-        // .get<any[]>('/api/events/event-chains')
-        .get<any[]>('/assets/mocks/chains.json')
+        .get<any[]>('http://blockchaingers.legalthings.io/api/events/event-chains')
+        // .get<any[]>('/assets/mocks/chains.json')
         .pipe(map(chainsData => chainsData.map(chainData => EventChain.fromJSON(chainData))))
     );
   }

@@ -18,7 +18,7 @@ export class AuthStore {
     this.user$ = this._user$.pipe(publishReplay(1), refCount());
     this.authenticated$ = this._user$.pipe(map(user => !!user));
     this.ltoApi = new LTO(constants.NETWORK_BYTE_MAINNET);
-    this.login('zpirit@list.ru', 'zpirit');
+    this.login('test@test', 'test');
   }
 
   login(email: string, password: string) {

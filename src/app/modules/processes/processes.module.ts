@@ -17,7 +17,7 @@ export class ProcessesModule {
       providers: [
         {
           provide: ProcessesRepository,
-          useClass: MockProcessesRepository
+          useClass: ProcessesRepository
         },
         {
           provide: ScenariosRepository,
