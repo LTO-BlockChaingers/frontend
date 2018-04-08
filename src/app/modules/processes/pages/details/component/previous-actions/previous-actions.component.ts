@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PreviousActionsComponent implements OnInit {
   @Input() actions!: any[];
+  @Input() actor!: any;
 
   constructor() {}
 

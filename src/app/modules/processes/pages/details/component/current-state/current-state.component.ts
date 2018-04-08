@@ -21,7 +21,7 @@ interface State {
 export class CurrentStateComponent implements OnInit {
   @Input() scenarioId: string;
   @Input() state!: State; //
-  @Input() actor!: string;
+  @Input() actor!: any;
   @Output() action = new EventEmitter<any>();
 
   get instructions(): string {
