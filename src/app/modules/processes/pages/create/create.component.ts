@@ -236,7 +236,9 @@ export class CreateComponent implements OnInit {
     this.blockchainRepo.post(this.eventChain).subscribe(data => {
       // We suppose to get here positibe response so we need to navigate to process details
       this.auth.addIdentity(this.eventChain.id, this.identity.id);
-      this.router.navigate(['..', 'details', data.id]);
+      const processResource = data.resources.find(r => r.indexOf('process') !== -1);
+      const id = processResource.split('/').pop();
+      this.router.navigate(['..', 'details', id]);
     });
     return true;
   }
