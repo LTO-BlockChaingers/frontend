@@ -3,6 +3,7 @@ import * as Waves from 'wavesplatform'
 import * as Utils from 'wavesplatform/utils'
 import * as Scenario1 from 'wavesplatform/createDemoChain'
 import * as Scenario2 from 'wavesplatform/createDemoAssetScenario'
+import * as Crypto from 'wavesplatform/crypto'
 import { IWavesAccount } from 'wavesplatform';
 
 @Injectable()
@@ -28,6 +29,12 @@ export class WavesService {
   */
   createScenario2(masterSeed: string, assetName: string, amount: number): Promise<Scenario2.ISmartAssetScenario> {
     return Scenario2.createDemoAssetScenario(masterSeed, assetName, amount)
+  }
+
+  async signTransaction(signerSeed: string, txId: string): Promise<Waves.IDataEntry> {
+    await Scenario2.agreeForTransaction(signerSeed, txId)
+    const addr = Waves.createWavesAccountFromSeed(signerSeed).address
+    return await Utils.waitForData(addr, txId)
   }
 
 }
