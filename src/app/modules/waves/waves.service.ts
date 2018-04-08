@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as Waves from 'wavesplatform'
+import * as Utils from 'wavesplatform/utils'
+import * as Scenario1 from 'wavesplatform/createDemoChain'
+import * as Scenario2 from 'wavesplatform/createDemoAssetScenario'
+import { IWavesAccount } from 'wavesplatform';
 
 @Injectable()
 export class WavesService {
@@ -11,4 +15,19 @@ export class WavesService {
   getData(seed: string, key?: string): Promise<Waves.IDataEntry[]> {
     return Waves.getData(seed, key)
   }
+  createScenario1(rootSeed: string, licenseType: string, depth: number): Promise<Waves.IWavesAccount[]> {
+    return Scenario1.createDemoChain(rootSeed, licenseType, depth)
+  }
+  /**
+  * Sets up the whole scenario2 for demo
+  * Returns ISmartAssetScenario, with notary, king, assetId, accounts A and B, and transfer transaction avaiting notary and recipient approvals
+  * 
+  * @param {string} masterSeed
+  * masterSeed should have waves on account to setup everything
+  * @param {string} assetName
+  */
+  createScenario2(masterSeed: string, assetName: string, amount: number): Promise<Scenario2.ISmartAssetScenario> {
+    return Scenario2.createDemoAssetScenario(masterSeed, assetName, amount)
+  }
+
 }
